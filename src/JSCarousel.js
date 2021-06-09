@@ -75,10 +75,20 @@ class FocusableElement {
         return children.filter(el => this.isFocusable(el));
     }
 }
+/**
+ * @class JSCarousel
+ * @classdesc Creates a customisable carousel.
+ */
 class JSCarousel {
+    /**
+     * @constructs JSCarousel
+     * @param {HTMLElement} container The container in which there is the HTML structure of the carousel.
+     * @param {{autonav?:boolean,autonav_delay?:number,tabs?:boolean,navigations_buttons?:boolean,disable_keyboard_navigation?:boolean}} options
+     */
     constructor(container, options) {
         this.width = 0;
         this.max_index = 0;
+        this.pause = false;
         this.current_index = 0;
         this.current_delay = 0;
         this.container = container;
@@ -131,12 +141,14 @@ class JSCarousel {
         // auto nav
         if (this.allow_autonav) {
             window.setInterval(() => {
-                if (this.current_delay >= this.autonav_delay) {
-                    this.next();
-                    this.current_delay = 0;
-                }
-                else {
-                    this.current_delay += 1000;
+                if (!this.pause) {
+                    if (this.current_delay >= this.autonav_delay) {
+                        this.next();
+                        this.current_delay = 0;
+                    }
+                    else {
+                        this.current_delay += 1000;
+                    }
                 }
             }, 1000);
         }
@@ -178,7 +190,7 @@ class JSCarousel {
             for (let i = 0; i < this.tabs.length; i++) {
                 const tab = this.tabs[i];
                 tab.addEventListener("click", () => {
-                    this.active_panel(i);
+                    this.activate_panel(i);
                     this.current_index = i;
                     this.current_delay = 0;
                 });
@@ -248,10 +260,25 @@ class JSCarousel {
         return false;
     }
     /**
+     * Stops the auto navigation of the carousel.
+     */
+    stop() {
+        this.pause = true;
+    }
+    /**
+     * Plays the auto navigation of the carousel.
+     */
+    play() {
+        this.pause = false;
+    }
+    /**
      * Actives a panel.
      * @param {number} index The index of the window.
      */
-    active_panel(index) {
+    activate_panel(index) {
+        if (index > this.max_index || index < 0) {
+            throw new Error("The panel with index " + index + " does not exist.");
+        }
         if (this.tabs) {
             const tab = this.tabs[index];
             if (tab) {
@@ -287,11 +314,11 @@ class JSCarousel {
      */
     next() {
         if (this.current_index < this.max_index) {
-            this.active_panel(this.current_index + 1);
+            this.activate_panel(this.current_index + 1);
             this.current_index += 1;
         }
         else {
-            this.active_panel(0);
+            this.activate_panel(0);
             this.current_index = 0;
         }
     }
@@ -300,11 +327,11 @@ class JSCarousel {
      */
     previous() {
         if (this.current_index > 0) {
-            this.active_panel(this.current_index - 1);
+            this.activate_panel(this.current_index - 1);
             this.current_index -= 1;
         }
         else {
-            this.active_panel(this.max_index);
+            this.activate_panel(this.max_index);
             this.current_index = this.max_index;
         }
     }

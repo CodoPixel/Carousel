@@ -87,10 +87,10 @@
     <script src="JSCarousel.js"></script>
     <script>
         const container = document.querySelector("#my-carousel");
-        new JSCarousel(container, {
-            autonav: false,
-            tabs: false,
-            navigations_buttons: false,
+        const carousel = new JSCarousel(container, {
+            autonav: true,
+            tabs: true,
+            navigations_buttons: true,
             autonav_delay: 2000,
             disable_keyboard_navigation: false
         });

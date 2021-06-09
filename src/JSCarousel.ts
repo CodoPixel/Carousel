@@ -96,6 +96,10 @@ interface JSCarouselOptions {
     disable_keyboard_navigation?: boolean;
 }
 
+/**
+ * @class JSCarousel
+ * @classdesc Creates a customisable carousel.
+ */
 class JSCarousel {
     protected readonly container: HTMLElement;
     protected readonly allow_tabs: boolean;
@@ -107,9 +111,15 @@ class JSCarousel {
     protected readonly buttons: [HTMLElement | null, HTMLElement | null];
     protected readonly width: number = 0;
     protected readonly max_index: number = 0;
+    protected pause: boolean = false;
     protected current_index: number = 0;
     protected current_delay: number = 0;
 
+    /**
+     * @constructs JSCarousel
+     * @param {HTMLElement} container The container in which there is the HTML structure of the carousel.
+     * @param {{autonav?:boolean,autonav_delay?:number,tabs?:boolean,navigations_buttons?:boolean,disable_keyboard_navigation?:boolean}} options
+     */
     public constructor(container: HTMLElement, options?: JSCarouselOptions) {
         this.container = container;
         if (!this.container) {
@@ -164,11 +174,13 @@ class JSCarousel {
 
         if (this.allow_autonav) {
             window.setInterval(() => {
-                if (this.current_delay >= this.autonav_delay) {
-                    this.next();
-                    this.current_delay = 0
-                } else {
-                    this.current_delay += 1000;
+                if (!this.pause) {
+                    if (this.current_delay >= this.autonav_delay) {
+                        this.next();
+                        this.current_delay = 0
+                    } else {
+                        this.current_delay += 1000;
+                    }
                 }
             }, 1000);
         }
@@ -212,7 +224,7 @@ class JSCarousel {
             for (let i = 0; i < this.tabs.length; i++) {
                 const tab = this.tabs[i];
                 tab.addEventListener("click", () => {
-                    this.active_panel(i);
+                    this.activate_panel(i);
                     this.current_index = i;
                     this.current_delay = 0;
                 });
@@ -290,10 +302,28 @@ class JSCarousel {
     }
 
     /**
+     * Stops the auto navigation of the carousel.
+     */
+    public stop(): void {
+        this.pause = true;
+    }
+
+    /**
+     * Plays the auto navigation of the carousel.
+     */
+    public play(): void {
+        this.pause = false;
+    }
+
+    /**
      * Actives a panel.
      * @param {number} index The index of the window.
      */
-    public active_panel(index: number): void {
+    public activate_panel(index: number): void {
+        if (index > this.max_index || index < 0) {
+            throw new Error("The panel with index " + index + " does not exist.");
+        }
+
         if (this.tabs) {
             const tab = this.tabs[index];
             if (tab) {
@@ -327,10 +357,10 @@ class JSCarousel {
      */
     public next(): void {
         if (this.current_index < this.max_index) {
-            this.active_panel(this.current_index + 1);
+            this.activate_panel(this.current_index + 1);
             this.current_index += 1;
         } else {
-            this.active_panel(0);
+            this.activate_panel(0);
             this.current_index = 0;
         }
     }
@@ -340,10 +370,10 @@ class JSCarousel {
      */
     public previous(): void {
         if (this.current_index > 0) {
-            this.active_panel(this.current_index - 1);
+            this.activate_panel(this.current_index - 1);
             this.current_index -= 1;
         } else {
-            this.active_panel(this.max_index);
+            this.activate_panel(this.max_index);
             this.current_index = this.max_index;
         }
     }
