@@ -1,0 +1,114 @@
+.carousel {
+    position: relative;
+    overflow: hidden;
+}
+
+/*
+*
+* tabs
+*
+ */
+
+.carousel-tablist {
+    position: absolute;
+    z-index: 100;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.carousel-tablist li {
+    margin-right: 10px;
+}
+
+.carousel-tablist li:last-child {
+    margin-right: 0;
+}
+
+.carousel-tablist li .pos {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid lightgray;
+    cursor: pointer;
+    transition: background-color 200ms ease, width 200ms ease, height 200ms ease;
+}
+
+.carousel-tablist li .pos.pos-active {
+    background-color: lightgray;
+    width: 15px;
+    height: 15px;
+}
+
+/*
+*
+* previous & next buttons
+*
+ */
+
+.carousel-prev {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.carousel-next {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.carousel-prev,
+.carousel-next {
+    z-index: 100;
+    background-color: #000;
+    color: #fff;
+    font-size: 1.5em;
+    border: none;
+    cursor: pointer;
+    width: 55px;
+    height: 55px;
+    border-radius: 5px;
+    opacity: 0.5;
+    transition: opacity 200ms ease;
+}
+
+.carousel-prev:hover,
+.carousel-prev:focus,
+.carousel-next:hover,
+.carousel-next:focus {
+    opacity: 0.8;
+}
+
+/*
+*
+* windows
+*
+ */
+
+/* so that you don't see the hidden windows when the page is loading. */
+.carousel-content[aria-hidden="false"] {
+    z-index: 20;
+}
+
+.carousel-content[aria-hidden="true"] {
+    z-index: 10;
+}
+
+.carousel-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: left 500ms ease;
+}

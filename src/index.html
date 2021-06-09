@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Carousel</title>
+    <link rel="stylesheet" href="style-carousel.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        * {
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        #my-carousel {
+            height: 60vh;
+            width: 100%;
+            margin-top: 10%;
+            box-sizing: border-box;
+            border: 1px solid lightgray;
+        }
+
+        /* customisations */
+
+        .carousel-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel-content img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .carousel-content h3 {
+            font-size: 1.8em;
+            font-weight: 500;
+        }
+
+        .carousel-content a {
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <section id="my-carousel" class="carousel">
+        <button type="button" class="carousel-prev">&lt;</button>
+        <div class="carousel-windows">
+            <div class="carousel-content" role="tabpanel" id="slider-1" aria-hidden="false">
+                <img src="assets/slider-image-1.jpg" alt="Image 1">
+                <h3>Panel 1</h3>
+                <a href="#">A link</a>
+            </div>
+            <div class="carousel-content" role="tabpanel" id="slider-2" aria-hidden="true">
+                <img src="assets/slider-image-2.jpg" alt="Image 2">
+                <h3>Panel 2</h3>
+                <a href="#" tabindex="-1">A disabled link</a>
+            </div>
+            <div class="carousel-content" role="tabpanel" id="slider-3" aria-hidden="true">
+                <img src="assets/slider-image-3.jpg" alt="Image 3">
+                <h3>Panel 3</h3>
+                <a href="#" tabindex="-1">A disabled link</a>
+            </div>
+        </div>
+        <button type="button" class="carousel-next">&gt;</button>
+        <ul class="carousel-tablist" role="tablist">
+            <li role="tab" tabindex="0" aria-selected="true" aria-controls="slider-1"><div class="pos pos-active"></div></li>
+            <li role="tab" tabindex="-1" aria-selected="false" aria-controls="slider-2"><div class="pos"></div></li>
+            <li role="tab" tabindex="-1" aria-selected="false" aria-controls="slider-3"><div class="pos"></div></li>
+        </ul>
+    </section>
+
+    <script src="JSCarousel.js"></script>
+    <script>
+        const container = document.querySelector("#my-carousel");
+        new JSCarousel(container, {
+            autonav: false,
+            tabs: false,
+            navigations_buttons: false,
+            autonav_delay: 2000,
+            disable_keyboard_navigation: false
+        });
+    </script>
+</body>
+</html>
