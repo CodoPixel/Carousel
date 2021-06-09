@@ -191,8 +191,8 @@ class JSCarousel {
      */
     _enable_keyboard_navigation() {
         window.addEventListener("keydown", (e) => {
-            const focus_on_tabs = this.has_tabs_focus();
-            const focus_in_window = this.has_window_focus();
+            const focus_on_tabs = this.have_tabs_focus();
+            const focus_in_window = this.have_windows_focus();
             const cltr_up_in_window = focus_in_window && e.ctrlKey && (e.key === "ArrowUp" || e.keyCode === 38);
             if (cltr_up_in_window) {
                 if (this.tabs)
@@ -220,7 +220,7 @@ class JSCarousel {
      * Checks if one of the tabs has the focus.
      * @protected
      */
-    has_tabs_focus() {
+    have_tabs_focus() {
         if (this.allow_tabs && this.tabs) {
             for (let tab of Array.from(this.tabs)) {
                 if (tab == document.activeElement) {
@@ -234,7 +234,7 @@ class JSCarousel {
      * Checks if one of the window has the focus.
      * @protected
      */
-    has_window_focus() {
+    have_windows_focus() {
         const windows = this.container.querySelectorAll(".carousel-content");
         if (windows) {
             for (let w of Array.from(windows)) {
